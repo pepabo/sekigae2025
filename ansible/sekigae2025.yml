@@ -1,0 +1,56 @@
+---
+# ペパボ席替え2025 Ansible版
+# ansible-playbook -i inventory.ini sekigae2025.yml
+
+- name: ペパボ席替え2025 - Ansible Playbook版
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    # メンバーリスト
+    members:
+      - zipper
+      - takutaka
+      - drumato
+      - ressy
+      - shibatch
+      - masaki
+      - chiroru
+      - ryu-ch
+      - kmsn
+
+    # 席数
+    total_seats: 9
+
+    # シード値
+    random_seed: "{{ seed | default(ansible_date_time.epoch) }}"
+
+  tasks:
+    - name: 席替え開始
+      debug:
+        msg: "===== 席替え開始！ ====="
+
+    - name: メンバーリストをシャッフル
+      set_fact:
+        shuffled_members: "{{ members | shuffle(seed=random_seed) }}"
+
+    - name: 席番号とメンバーのマッピング
+      set_fact:
+        seat_assignments: "{{ seat_assignments | default({}) | combine({(item.1 + 1) | string: item.0}) }}"
+      loop: "{{ shuffled_members | zip(range(total_seats)) | list }}"
+      loop_control:
+        loop_var: item
+
+    - name: 席替え結果を実行
+      shell: |
+        echo "================================"
+        echo "新しい席です！"
+        echo "================================"
+        {% for seat_num in range(1, total_seats + 1) %}
+        echo "{{ seat_num }}番：{{ seat_assignments[seat_num|string] }}"
+        {% endfor %}
+        echo "================================"
+      register: result
+
+    - name: 席替え結果を表示
+      debug:
+        var: result.stdout_lines
