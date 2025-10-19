@@ -13,7 +13,7 @@ fun insert( l: list<(int, string)>, e: (int, string) )
   }
 
 fun sekigae( members: list<string> ) : random list<string>
-  members.map(fn(x){ (random-int(), x) }).isort([]).map(snd)
+  members.map( (random-int(), _) ).isort([]).map(snd)
 
 pub fun main()
     [
