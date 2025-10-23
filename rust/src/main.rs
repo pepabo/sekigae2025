@@ -1,8 +1,8 @@
 use std::collections::BTreeMap;
 
+use rand::SeedableRng;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
-use rand::SeedableRng;
 use rand_chacha::ChaCha20Rng;
 use serde_json::json;
 
@@ -12,8 +12,10 @@ use serde_json::json;
 */
 
 fn main() {
-    let mut names = vec!["zipper", "takutaka", "drumato", "ressy", "shibatch", "masaki", "chiroru", "ryu-ch", "kmsn"];
-   
+    let mut names = vec![
+        "zipper", "takutaka", "drumato", "ressy", "shibatch", "masaki", "chiroru", "ryu-ch", "kmsn",
+    ];
+
     if let Ok(seed_str) = std::env::var("SEED") {
         let seed: u64 = seed_str.parse().unwrap_or(0);
         let mut rng = ChaCha20Rng::seed_from_u64(seed);
