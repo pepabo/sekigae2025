@@ -1,0 +1,45 @@
+import { env_var_get, echo_error } from "std/env"
+import { parse_number } from "std/text"
+
+const members = [
+    "chiroru",
+    "drumato",
+    "kmsn",
+    "masaki",
+    "ressy",
+    "ryu-ch",
+    "shibatch",
+    "takutaka",
+    "zipper",
+]
+
+// Use Fisher-Yates shuffle algorithm
+fun shuffle(arr: []): [] {
+    let shuffled = arr
+    let n = len(arr)
+
+    for idx, _elm in arr {
+        let rand_txt = trust env_var_get("RANDOM")
+        let rand = parse_number(rand_txt) failed {
+            echo_error("Failed to parse RANDOM environment variable")
+        }
+
+        let remaining = n - idx
+        let rand_idx = idx + (rand % remaining)
+
+        if rand_idx != idx {
+            let temp = shuffled[rand_idx]
+            shuffled[rand_idx] = shuffled[idx]
+            shuffled[idx] = temp
+        }
+    }
+
+    return shuffled;
+}
+
+main {
+    let shuffled_members = shuffle(members)
+    for idx, mem in shuffled_members {
+        echo "{idx + 1}: {mem}"
+    }
+}
