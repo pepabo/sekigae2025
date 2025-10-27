@@ -10,5 +10,3 @@ https://webkit.org/blog/17285/rolling-the-dice-with-css-random/
 https://developer.mozilla.org/ja/docs/Web/CSS/order#%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B7%E3%83%93%E3%83%AA%E3%83%86%E3%82%A3
 
 ![対象者が縦に並んでおり、CSSのrandom()によって順序がランダムに入れかえられる。](./screenshot.png)
-
-`npm run dev` で開発サーバが起動します。
